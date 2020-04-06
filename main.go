@@ -23,6 +23,7 @@ func init() {
 }
 
 func onMessageReceived(_ mqtt.Client, msg mqtt.Message) {
+	publish(msg.Payload(), msg.Topic())
 	println(string(msg.Payload()))
 }
 
