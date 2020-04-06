@@ -1,13 +1,26 @@
 package main
 
 import (
-	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/nats-io/nats.go"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 )
+
+var (
+	nc  *nats.Conn
+	err error
+)
+
+func init() {
+	nc, err = connect()
+	if err != nil {
+		panic(err)
+	}
+}
 
 func onMessageReceived(_ mqtt.Client, msg mqtt.Message) {
 	println(string(msg.Payload()))
@@ -29,7 +42,7 @@ func main() {
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	} else {
-		fmt.Printf("Connected to server:\n")
+		log.Println("Connected to MQTT Broker")
 	}
 	<-c
 }
