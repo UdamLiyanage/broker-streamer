@@ -1,8 +1,7 @@
 package main
 
 import (
-	"github.com/nats-io/nats.go"
-	"github.com/prometheus/common/log"
+	"log"
 	"os"
 )
 
@@ -18,12 +17,7 @@ func publish(payload []byte, topic string) {
 		Topic:   topic,
 		Payload: payload,
 	}
-	ec, err := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
-	if err != nil {
-		log.Error(err)
-	}
-	defer ec.Close()
 	if err := ec.Publish(os.Getenv("NATS_SUBJECT"), &msgPayload); err != nil {
-		log.Error(err)
+		log.Println(err)
 	}
 }

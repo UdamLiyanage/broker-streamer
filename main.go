@@ -11,12 +11,12 @@ import (
 )
 
 var (
-	nc  *nats.Conn
+	ec  *nats.EncodedConn
 	err error
 )
 
 func init() {
-	nc, err = connect()
+	ec, err = connect()
 	if err != nil {
 		panic(err)
 	}
